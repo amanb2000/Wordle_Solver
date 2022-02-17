@@ -4,13 +4,14 @@ using ProgressMeter
 Program that finds the best word to guess given some constraints, a set of
 possible word answers, and a set of possible word guesses.
 """
-
+FILE_OUT = "best_starting.txt"
 
 include("get_remaining_words.jl")
 
+
 println("\nNumber of threads: ", Threads.nthreads())
 
-answer_words = readlines("allowed_answers.txt");
+answer_words = readlines("allowed_answers.txt")
 allowed_words = readlines("allowed_words.txt");
 
 append!(allowed_words,answer_words)
@@ -62,10 +63,9 @@ word_order = sortperm(expected_reduction, rev=true)
 sorted_reduction = expected_reduction[word_order]
 sorted_words = feasible_guess_words[word_order]
 
-println("Expected reductions: Top 5 Values")
-println(sorted_reduction[1:min(5,length(sorted_reduction))])
+f = open(FILE_OUT, "w")
 
-println("\nExpected reductions: Top")
+println(f, "\nExpected Reductions: Top Ranked Guesses")
 for i = 1:min(50,length(sorted_words))
-    println(sorted_words[i]," -- ", sorted_reduction[i])
+    println(f, sorted_words[i]," -- ", sorted_reduction[i])
 end
